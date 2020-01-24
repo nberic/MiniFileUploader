@@ -3,6 +3,7 @@ const fs = require("fs");
 const express = require("express");
 const multer = require("multer");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 
 const DIR = "./uploads";
@@ -37,30 +38,18 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage });
 
+app.options("*", cors());
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-    res.setHeader("Access-Control-Allow-Methods", "POST");
-    res.setHeader("Access-Control-Allow-Headers", `X-Requested-With, Content-Type, ${ fileNameHeader }, ${ usernameHeader }`);
-    res.setHeader("Access-Control-Allow-Credentials", true);
-    next();
-});
 
 app.get("/api", (req, res) => {
     res.end("File Upload");
 });
 
 app.post("/api/upload", upload.array("file"), (req, res) => {
-    if (!req.file) {
-        console.log("Your request doesn't have any file.");
-        return res.send({ success: false });
-    }
-    else {
-        console.log("Your file has been received successfully.");
-        return res.send({ success: true });
-    }
+    //TODO: check out if file was uploaded
+    return res.send({ success: true });
 });
 
 const PORT = process.env.PORT || 4000;
