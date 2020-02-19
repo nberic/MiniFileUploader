@@ -16,24 +16,31 @@ export class FormComponent implements OnInit {
     "User-Name": this.username
   });
 
+  private fileReader = new FileReader();
+  private fileContent: string;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-
+    this.fileReader.onload = () => {
+      this.fileContent = this.fileReader.result.toString();
+      console.log(this.fileContent);
+    };
   }
 
   uploadFiles(selectedFiles: FileList) {
-    console.log(selectedFiles);
+    const file = selectedFiles[0];
+    this.fileReader.readAsText(file);
 
-    const formData: FormData = new FormData();
-    for (let i = 0; i < selectedFiles.length; ++i) {
-      formData.append("file", selectedFiles.item(i), selectedFiles.item(i).name);
-    }
+    // const formData: FormData = new FormData();
+    // for (let i = 0; i < selectedFiles.length; ++i) {
+    //   formData.append("file", selectedFiles.item(i), selectedFiles.item(i).name);
+    // }
 
-    this.http.post(this.url, formData, { headers: this.headers })
-      .subscribe(data => {
-        console.log(JSON.stringify(data));
-      });
+    // this.http.post(this.url, formData, { headers: this.headers })
+    //   .subscribe(data => {
+    //     console.log(JSON.stringify(data));
+    //   });
   }
 
 }

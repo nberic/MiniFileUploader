@@ -1,5 +1,5 @@
 <form>
-    <input #fileSelector type="file" accept="image/png, image/jpeg" multiple>
+    <input #fileSelector type="file" accept=".py, .json">
     <br>
     <button type="button" (click)="uploadFiles(fileSelector.files)"> Upload </button>
 </form>
